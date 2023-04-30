@@ -75,9 +75,5 @@ class SimpleProjectDeveloper(objectFactory: ObjectFactory) : Configuration<Maven
 
         configurable.properties.set(properties)
     }
-
-//    private companion object {
-//        val SECOND_VALID_URL_FORMAT = Regex("#\\w::\\w")
-//    }
 }
 
