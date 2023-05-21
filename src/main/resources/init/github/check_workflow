@@ -1,0 +1,21 @@
+name: check
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: '$JAVA_DISTRIBUTION$'
+          java-version: '$JAVA_VERSION$'
+          cache: 'gradle'
+      - name: Fetch origin/$GIT_DEFAULT_BRANCH$
+        run: git fetch origin $GIT_DEFAULT_BRANCH$
+      - name: Build
+        run: ./gradlew clean build --no-daemon --no-parallel --stacktrace

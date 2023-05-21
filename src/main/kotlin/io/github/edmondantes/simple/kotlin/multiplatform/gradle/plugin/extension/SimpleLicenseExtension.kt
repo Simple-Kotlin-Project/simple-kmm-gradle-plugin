@@ -1,5 +1,6 @@
-package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.license
+package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.extension
 
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.license.SimpleLicense
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.SimpleExtension
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property

@@ -1,27 +1,17 @@
-package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.developer
+package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.pom
 
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleProjectOrganizationsConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.organization.SimpleProjectOrganization
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.organization.SimpleProjectOrganizationsConfiguration
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.url.UrlParser
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.Configuration
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.SimpleExtension
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.url.UrlParser
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.url.UrlType
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.publish.maven.MavenPomDeveloper
-import javax.inject.Inject
-
-open class SimpleProjectDevelopersExtension @Inject constructor(private val objectFactory: ObjectFactory) :
-    SimpleExtension {
-
-    internal val developers = ArrayList<SimpleProjectDeveloper>()
-
-    fun developer(block: SimpleProjectDeveloper.() -> Unit) {
-        developers.add(SimpleProjectDeveloper(objectFactory).also(block))
-    }
-
-}
 
 class SimpleProjectDeveloper(objectFactory: ObjectFactory) : Configuration<MavenPomDeveloper> {
+
+    override var isConfigurationEnabled: Boolean = true
 
     lateinit var id: String
     lateinit var name: String
@@ -54,7 +44,7 @@ class SimpleProjectDeveloper(objectFactory: ObjectFactory) : Configuration<Maven
         }
 
         if (::url.isInitialized) {
-            configurable.url.set(UrlParser.parse(url, "http"))
+            configurable.url.set(UrlParser.parse(url, UrlType.HTTP))
         }
 
         if (::organization.isInitialized) {
@@ -76,4 +66,3 @@ class SimpleProjectDeveloper(objectFactory: ObjectFactory) : Configuration<Maven
         configurable.properties.set(properties)
     }
 }
-

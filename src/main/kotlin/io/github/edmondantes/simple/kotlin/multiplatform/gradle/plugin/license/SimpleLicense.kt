@@ -8,6 +8,8 @@ enum class SimpleLicense(private val licenseName: String, private val url: Strin
 
     APACHE2("The Apache License, Version 2.0", "http://www.apache.org/licenses/LICENSE-2.0.txt");
 
+    override var isConfigurationEnabled: Boolean = true
+
     override fun configure(configurable: MavenPomLicenseSpec) {
         configurable.license {
             it.name.set(licenseName)

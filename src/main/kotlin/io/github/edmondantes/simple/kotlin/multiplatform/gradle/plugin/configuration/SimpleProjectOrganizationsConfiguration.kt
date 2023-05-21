@@ -1,11 +1,14 @@
-package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.organization
+package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration
 
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.organization.SimpleProjectOrganization
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.extension.SimpleProjectOrganizationExtension
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.Configuration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.extensionGetOrCreate
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 
 object SimpleProjectOrganizationsConfiguration : Configuration<Project> {
+    override var isConfigurationEnabled: Boolean = true
     private val ORGANIZATIONS = HashMap<String, SimpleProjectOrganization>()
 
     init {
