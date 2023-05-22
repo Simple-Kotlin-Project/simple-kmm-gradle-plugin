@@ -24,7 +24,7 @@ object SimpleKmmSpotlessConfiguration : Configuration<Project> {
             it.encoding("UTF-8")
             it.kotlin {
                 it.target("src/*/kotlin/**/*.kt")
-                it.targetExclude(SimpleKmmTestEnvironmentConfiguration.variablesFilePath)
+                it.targetExclude(file(SimpleKmmTestEnvironmentConfiguration.variablesClassPath))
                 it.ktlint(ktlintVersion)
                 it.licenseHeaderFile(licenseFileHeaderPath)
             }

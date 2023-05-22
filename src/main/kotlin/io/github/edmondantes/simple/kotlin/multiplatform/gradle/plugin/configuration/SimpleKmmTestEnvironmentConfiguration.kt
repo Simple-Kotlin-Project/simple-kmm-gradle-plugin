@@ -3,11 +3,9 @@ package io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configur
 import groovy.json.StringEscapeUtils
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.extension.SimpleKmmTestEnvironmentExtension
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.tasks.InitFileTask
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.tasks.git.GitAddTask
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.tasks.git.GitNoSkipWorktreeTask
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.tasks.git.GitSkipWorktreeTask
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.Configuration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.extensionGetOrCreate
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.DEFAULT_PROPERTY_PREFIX
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.PropertyDelegate
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.PropertyDelegateBuilder
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.pluginProperty
@@ -15,41 +13,30 @@ import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.prop
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.nio.file.Path
 
 object SimpleKmmTestEnvironmentConfiguration : Configuration<Project> {
     override var isConfigurationEnabled: Boolean by testEnvProperty { defaultValue = true }
-    var variablesFilePath: String by testEnvProperty { defaultValue = "./src/commonTest/kotlin/env/Env.kt" }
-    var isTestLoggingEnabled: Boolean by testEnvProperty { defaultValue = false }
+    var isVariablesFileShouldInitBeforeBuild: Boolean by testEnvProperty { defaultValue = true }
+    var variablesFileDirectory: String by testEnvProperty {
+        defaultValue = "./build/generated/testEnvironmentKmm/src/commonTest/kotlin"
+    }
+    var variablesClassPath: String by testEnvProperty { defaultValue = "env/Env.kt" }
     var variablesDefaultIncluded: Boolean by testEnvProperty { defaultValue = true }
 
-    private lateinit var extension: SimpleKmmTestEnvironmentExtension
-
-    override fun configure(configurable: Project) {
-        configurable.preConfigure()
-        configurable.configureTasks()
-    }
-
-    private fun Project.preConfigure() {
-        extension = extensionGetOrCreate<SimpleKmmTestEnvironmentExtension>("simpleTestEnv")
+    override fun configure(configurable: Project): Unit = configurable.run {
+        val extension = extensionGetOrCreate<SimpleKmmTestEnvironmentExtension>("simpleTestEnv")
         if (variablesDefaultIncluded) {
             extension.putAll(DEFAULT_ENVIRONMENT_VARIABLES)
         }
-    }
 
-    private fun Project.configureTasks() {
-        val envFile = file(variablesFilePath)
-        val envFilePath = envFile.toPath()
-        val gitStartTrack = tasks.create("gitStartTrackEnvFile", GitNoSkipWorktreeTask::class.java) {
-            it.inputPath.set(envFilePath)
+        extensions.configure(KotlinMultiplatformExtension::class.java) {
+            it.sourceSets.getByName("commonTest").kotlin.srcDir(variablesFileDirectory)
         }
 
-        val gitAdd = tasks.create("gitAddEnvFile", GitAddTask::class.java) {
-            it.inputPath.set(envFilePath)
-        }
-
-        val gitEndTrack = tasks.create("gitEndTrackEnvFile", GitSkipWorktreeTask::class.java) {
-            it.inputPath.set(envFilePath)
-        }
+        val envFile = file(Path.of(variablesFileDirectory).resolve(variablesClassPath).toString())
 
         val updateTestEnvFile = tasks.create("updateTestEnvFile") {
             it.group = TEST_ENVIRONMENT_GROUP_NAME
@@ -58,6 +45,13 @@ object SimpleKmmTestEnvironmentConfiguration : Configuration<Project> {
                 if (!envFile.exists()) {
                     logger.warn("'Env.kt' file is not exists. Please start task 'initTestEnvFile'")
                     return@doLast
+                }
+
+                val envVariablesPrefix = "$DEFAULT_PROPERTY_PREFIX.$TEST_ENVIRONMENT_PROPERTY_PREFIX."
+                configurable.properties.filter { it.key.startsWith(envVariablesPrefix) }.map {
+                    it.value?.also { value ->
+                        extension[it.key.substring(envVariablesPrefix.length).substringBefore('.')] = value
+                    }
                 }
 
                 val envFileContent = envFile.readText()
@@ -87,48 +81,35 @@ object SimpleKmmTestEnvironmentConfiguration : Configuration<Project> {
             }
         }
 
-        tasks.create("initTestEnvFile", InitFileTask::class.java) {
+        val initTestEnvFileTask = tasks.create("initTestEnvFile", InitFileTask::class.java) {
             it.description = "Initialize 'Env.kt' file"
             it.fileForInit.set(envFile)
             it.resourceName.set("init/Env.kt")
 
-            it.finalizedBy(gitStartTrack, gitAdd, gitEndTrack, updateTestEnvFile)
-        }
-
-        tasks.create("enableTestLogging") {
-            it.group = TEST_ENVIRONMENT_GROUP_NAME
-            it.doLast {
-                extension[LOGGING_ENVIRONMENT_VARIABLE] = true
-            }
             it.finalizedBy(updateTestEnvFile)
         }
-
-        tasks.create("disableTestLogging") {
-            it.group = TEST_ENVIRONMENT_GROUP_NAME
-            it.doLast {
-                extension[LOGGING_ENVIRONMENT_VARIABLE] = false
-            }
-            it.finalizedBy(updateTestEnvFile)
-        }
-
 
         tasks.withType(Test::class.java) {
             it.dependsOn(updateTestEnvFile)
-            if (isTestLoggingEnabled) {
-                it.dependsOn("disableTestLogging")
-                it.finalizedBy("enableTestLogging")
-            }
+        }
+
+        if (isVariablesFileShouldInitBeforeBuild) {
+            tasks.withType(KotlinCompile::class.java)
+                .forEach { it.dependsOn(initTestEnvFileTask) }
         }
     }
 
     private const val TEST_ENVIRONMENT_GROUP_NAME = "test environment"
     private const val ENV_FILE_OBJECT_DEFINITION = "object Env {"
+
     private const val LOGGING_ENVIRONMENT_VARIABLE = "isEnableLogging"
     private val DEFAULT_ENVIRONMENT_VARIABLES = mapOf<String, Any>(LOGGING_ENVIRONMENT_VARIABLE to false)
 
     private inline fun <T> testEnvProperty(block: PropertyDelegateBuilder<T>.() -> Unit): PropertyDelegate<T> =
         pluginProperty {
             block()
-            prefix = prefix.propertyPrefix("test.environment")
+            prefix = prefix.propertyPrefix(TEST_ENVIRONMENT_PROPERTY_PREFIX)
         }
+
+    const val TEST_ENVIRONMENT_PROPERTY_PREFIX = "test.environment"
 }

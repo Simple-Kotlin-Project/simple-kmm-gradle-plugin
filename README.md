@@ -8,40 +8,42 @@
 Gradle plugin for configure kotlin multiplatform project for Simple Kotlin Project
 
 <!-- TOC -->
+
 * [Simple Kotlin Multiplatform Gradle Plugin](#simple-kotlin-multiplatform-gradle-plugin)
-  * [How to add plugin to your Gradle project](#how-to-add-plugin-to-your-gradle-project)
-  * [Configuration](#configuration)
-    * [URL](#url)
-    * [Common Kotlin Multiplatform Configuration](#common-kotlin-multiplatform-configuration)
-      * [Properties](#properties)
-    * [Java Configuration](#java-configuration)
-      * [Properties](#properties-1)
-    * [Git Configuration](#git-configuration)
-      * [Properties](#properties-2)
-    * [GitHub Configuration](#github-configuration)
-      * [Properties](#properties-3)
-    * [Spotless Configuration](#spotless-configuration)
-      * [Properties](#properties-4)
-    * [Dokka Configuration](#dokka-configuration)
-      * [Properties](#properties-5)
-    * [Kover Configuration](#kover-configuration)
-      * [Properties](#properties-6)
-    * [JGitVer Configuration](#jgitver-configuration)
-      * [Properties](#properties-7)
-    * [License Configuration](#license-configuration)
-      * [Properties](#properties-8)
-      * [Script](#script)
-    * [Organizations Configuration](#organizations-configuration)
-      * [Script](#script-1)
-    * [Developers Configuration](#developers-configuration)
-      * [Script](#script-2)
-    * [Publishing Configuration](#publishing-configuration)
-      * [Properties](#properties-9)
-      * [Script](#script-3)
-    * [Test Environments Variables Configuration](#test-environments-variables-configuration)
-      * [Default Test Environment Variables](#default-test-environment-variables)
-      * [Properties](#properties-10)
-      * [Script](#script-4)
+    * [How to add plugin to your Gradle project](#how-to-add-plugin-to-your-gradle-project)
+    * [Configuration](#configuration)
+        * [URL](#url)
+        * [Common Kotlin Multiplatform Configuration](#common-kotlin-multiplatform-configuration)
+            * [Properties](#properties)
+        * [Java Configuration](#java-configuration)
+            * [Properties](#properties-1)
+        * [Git Configuration](#git-configuration)
+            * [Properties](#properties-2)
+        * [GitHub Configuration](#github-configuration)
+            * [Properties](#properties-3)
+        * [Spotless Configuration](#spotless-configuration)
+            * [Properties](#properties-4)
+        * [Dokka Configuration](#dokka-configuration)
+            * [Properties](#properties-5)
+        * [Kover Configuration](#kover-configuration)
+            * [Properties](#properties-6)
+        * [JGitVer Configuration](#jgitver-configuration)
+            * [Properties](#properties-7)
+        * [License Configuration](#license-configuration)
+            * [Properties](#properties-8)
+            * [Script](#script)
+        * [Organizations Configuration](#organizations-configuration)
+            * [Script](#script-1)
+        * [Developers Configuration](#developers-configuration)
+            * [Script](#script-2)
+        * [Publishing Configuration](#publishing-configuration)
+            * [Properties](#properties-9)
+            * [Script](#script-3)
+        * [Test Environments Variables Configuration](#test-environments-variables-configuration)
+            * [Default Test Environment Variables](#default-test-environment-variables)
+            * [Properties](#properties-10)
+            * [Script](#script-4)
+
 <!-- TOC -->
 
 ## How to add plugin to your Gradle project
@@ -361,12 +363,14 @@ Plugin has default variables properties.
 
 #### Properties
 
-| Property name                                            | Description                                                  | Default value                        |
-|----------------------------------------------------------|--------------------------------------------------------------|--------------------------------------|
-| `simple.kmm.test.environment.configuration.enabled`      | Enables setting up Test Environments Variables by the plugin | `true`                               |
-| `simple.kmm.test.environment.variable.file.path`         | Path to file with environments variables                     | `./src/commonTest/kotlin/env/Env.kt` |
-| `simple.kmm.test.environment.variables.default.included` | If true default variables will be added to file              | `true`                               |
-| `simple.kmm.test.environment.test.logging.enabled`       | Enable logging in tests (If false, create chain for tasks)   | `false`                              |
+| Property name                                                         | Description                                                   | Default value                                                |
+|-----------------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------|
+| `simple.kmm.test.environment.configuration.enabled`                   | Enables setting up Test Environments Variables by the plugin  | `true`                                                       |
+| `simple.kmm.test.environment.variables.file.directory`                | Path to directory which environment variables file's packages | `./build/generated/testEnvironmentKmm/src/commonTest/kotlin` |
+| `simple.kmm.test.environment.variables.class.path`                    | Path to file with environments variables                      | `env/Env.kt`                                                 |
+| `simple.kmm.test.environment.variables.file.should.init.before.build` | If true, start `initTestEnvFile` task before `build` task     | `true`                                                       |
+| `simple.kmm.test.environment.variables.default.included`              | If true default variables will be added to file               | `true`                                                       |
+| `simple.kmm.test.environment.set.propertyName`                        | Sets value to environment variable with name `propertyName`   |                                                              |
 
 #### Script
 

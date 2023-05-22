@@ -85,7 +85,6 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
 
         }
 
-
         tasks.withType(Delete::class.java).configureEach {
             it.delete += listOf("$projectDir/kotlin-js-store")
         }

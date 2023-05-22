@@ -29,8 +29,8 @@ abstract class InitFileTask : DefaultTask() {
     fun initFile() {
         val file = fileForInit.orNull
             ?: throw GradleException("Can not find file for initializing. Please set input for task")
+
         if (file.exists()) {
-            logger.warn("File already exists")
             return
         }
 
