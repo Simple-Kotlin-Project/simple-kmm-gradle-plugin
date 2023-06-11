@@ -77,6 +77,7 @@ object SimpleKmmGitHubConfiguration : Configuration<Project> {
     private val SUBSTRING_FOR_REPLACE: Map<Regex, () -> String> = mapOf(
         "JAVA_DISTRIBUTION" to { javaDistribution },
         "JAVA_VERSION" to { SimpleKmmJavaConfiguration.javaTargetCompatibilityVersion.majorVersion },
-        "GIT_DEFAULT_BRANCH" to { SimpleKmmGitConfiguration.gitDefaultBranch }
+        "GIT_DEFAULT_BRANCH" to { SimpleKmmGitConfiguration.gitDefaultBranch },
+        "SPOTLESS_RATCHET_GIT_BRANCH" to { SimpleKmmSpotlessConfiguration.ratchetGitBranch }
     ).mapKeys { Regex("\\\$${it.key}\\\$") }
 }

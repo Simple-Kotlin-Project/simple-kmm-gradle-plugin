@@ -15,7 +15,7 @@ jobs:
           distribution: '$JAVA_DISTRIBUTION$'
           java-version: '$JAVA_VERSION$'
           cache: 'gradle'
-      - name: Fetch origin/$GIT_DEFAULT_BRANCH$
-        run: git fetch origin $GIT_DEFAULT_BRANCH$
+      - name: Fetch origin/$SPOTLESS_RATCHET_GIT_BRANCH$
+        run: git fetch origin $SPOTLESS_RATCHET_GIT_BRANCH$
       - name: Build
-        run: ./gradlew clean build --no-daemon --no-parallel --stacktrace
+        run: ./gradlew -Psimple.kmm.spotless.ratchet.git.branch=origin/$SPOTLESS_RATCHET_GIT_BRANCH$ clean build --no-daemon --no-parallel --stacktrace
