@@ -50,6 +50,6 @@ jobs:
           ORG_GRADLE_PROJECT_simple.kmm.publish.password: ${{ secrets.PUBLISH_REPOSITORY_PASSWORD }}
           ORG_GRADLE_PROJECT_simple.kmm.sign.key.id: ${{ secrets.SIGNING_KEY_ID }}
           ORG_GRADLE_PROJECT_simple.kmm.sign.password: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_simple.kmm.sign.private.ke: ${{ secrets.SIGNING_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_simple.kmm.sign.private.key: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_simple.kmm.kotlin.compile.only.platform: ${{ matrix.env == 'all' && 'false' || 'true' }}
           ORG_GRADLE_PROJECT_simple.kmm.kotlin.compile.browser.enabled: false
