@@ -3,7 +3,7 @@ import fr.brouillard.oss.jgitver.Strategies
 
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.22"
     id("fr.brouillard.oss.gradle.jgitver") version "0.9.1"
     id("com.gradle.plugin-publish") version "1.2.0"
 }
@@ -20,7 +20,7 @@ dependencies {
     withVersion("kotlin", "org.jetbrains.kotlin:kotlin-serialization")
     withVersion("dokka", "org.jetbrains.dokka:dokka-gradle-plugin")
     withVersion("spotless", "com.diffplug.spotless:spotless-plugin-gradle")
-    withVersion("kover", "org.jetbrains.kotlinx:kover")
+    withVersion("kover", "org.jetbrains.kotlinx:kover-gradle-plugin")
     withVersion("jgitver", "fr.brouillard.oss.gradle:gradle-jgitver-plugin")
 
     testImplementation(kotlin("test"))

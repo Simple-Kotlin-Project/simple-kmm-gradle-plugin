@@ -8,6 +8,6 @@ object SimpleKmmKoverConfiguration : Configuration<Project> {
     override var isConfigurationEnabled: Boolean by pluginProperty { prefix = "kover"; defaultValue = true }
 
     override fun configure(configurable: Project) {
-        configurable.pluginManager.apply("kover")
+        configurable.pluginManager.apply("org.jetbrains.kotlinx.kover")
     }
 }

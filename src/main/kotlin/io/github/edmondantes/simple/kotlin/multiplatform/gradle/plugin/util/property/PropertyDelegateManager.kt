@@ -11,11 +11,12 @@ object PropertyDelegateManager : Consumer<Project> {
 
     override fun accept(project: Project) {
         this.project = project
+        lastReset = System.currentTimeMillis()
     }
 
     fun getProperty(propertyName: String): Any? =
         project?.properties?.get(propertyName)
 
-    fun shouldUpdateProperty(lastInitialization: Long): Boolean =
+    fun isShouldUpdateProperty(lastInitialization: Long): Boolean =
         lastInitialization < lastReset
 }

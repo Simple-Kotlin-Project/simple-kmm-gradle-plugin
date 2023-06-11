@@ -27,7 +27,7 @@ class PropertyDelegate<T>(
     @Suppress("UNCHECKED_CAST")
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
         val needUpdate = lock.read {
-            PropertyDelegateManager.shouldUpdateProperty(isInitialized)
+            PropertyDelegateManager.isShouldUpdateProperty(isInitialized)
         }
 
         if (!needUpdate) {

@@ -12,13 +12,14 @@ object SimpleKmmSpotlessConfiguration : Configuration<Project> {
     override var isConfigurationEnabled: Boolean by spotlessProperty { defaultValue = true }
     var ktlintVersion: String by spotlessProperty { defaultValue = "0.48.2" }
     var licenseFileHeaderPath: String by spotlessProperty { defaultValue = "./LICENSE_FILE_HEADER" }
+    var ratchetGitBranch: String by spotlessProperty { defaultValue = SimpleKmmGitConfiguration.gitDefaultBranch }
 
     override fun configure(configurable: Project) = configurable.run {
         pluginManager.apply("com.diffplug.spotless")
 
         extensions.configure(SpotlessExtension::class.java) {
             if (SimpleKmmGitConfiguration.hasGitRepository) {
-                it.ratchetFrom(SimpleKmmGitConfiguration.gitDefaultBranch)
+                it.ratchetFrom(ratchetGitBranch)
             }
 
             it.encoding("UTF-8")
