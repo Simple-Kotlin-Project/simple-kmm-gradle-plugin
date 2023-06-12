@@ -50,7 +50,7 @@ class SimpleKotlinMultiplatformPlugin : Plugin<Project> {
 
     private fun Project.configureInitTasks() {
         tasks.create("initProject") {
-            group = InitFileTask.INIT_GROUP_NAME
+            it.group = InitFileTask.INIT_GROUP_NAME
             it.dependsOn(tasks.withType(InitFileTask::class.java))
         }
     }
