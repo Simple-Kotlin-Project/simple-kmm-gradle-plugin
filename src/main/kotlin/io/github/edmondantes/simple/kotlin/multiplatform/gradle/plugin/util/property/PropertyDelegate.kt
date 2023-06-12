@@ -10,6 +10,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.full.withNullability
 
 typealias PropertyMapper<T> = (String) -> T?
 typealias PropertyDefaultValueSupplier<T> = () -> T?
@@ -49,16 +50,16 @@ class PropertyDelegate<T>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun internalGetValue(property: KProperty<*>): T? {
+    private fun internalGetValue(property: KProperty<*>): T {
         val propertyName = transformPropertyName(property.name, property.returnType)
         val value = PropertyDelegateManager.getProperty(propertyName)
             ?: defaultValue?.invoke()
 
         if (value == null) {
             if (property.returnType.isMarkedNullable) {
-                return value
+                return null as T
             } else {
-                error("Can not get value for property with name $propertyName")
+                error("Can not find any value for property with name $propertyName")
             }
         }
 
@@ -68,7 +69,7 @@ class PropertyDelegate<T>(
 
         val valueStr = value.toString()
 
-        val notCastedResult: Any? = when (property.returnType) {
+        val notCastedResult: Any? = when (property.returnType.withNullability(false)) {
             String::class,
             String::class.starProjectedType -> valueStr
 
@@ -82,7 +83,12 @@ class PropertyDelegate<T>(
             UByte::class.starProjectedType -> valueStr.toUByteOrNull()
 
             Char::class,
-            Char::class.starProjectedType -> if (valueStr.length != 1) error("Can not cast String to Char class. Please change property value with name '$propertyName'") else valueStr[0]
+            Char::class.starProjectedType ->
+                if (valueStr.length != 1) {
+                    error("Can not cast ${value::class} to ${Char::class} class. Please change property value with name '$propertyName'")
+                } else {
+                    valueStr[0]
+                }
 
             Short::class,
             Short::class.starProjectedType -> valueStr.toShortOrNull()
@@ -119,12 +125,13 @@ class PropertyDelegate<T>(
 
             else -> {
                 if (mapper == null) {
-                    error("Can not cast String to ${property.returnType}. Please change property value or add mapper for property with name '$propertyName'")
+                    error("Can not cast '${value::class}' to '${property.returnType}'. Please change property value or add mapper for property with name '$propertyName'")
                 }
 
                 mapper.invoke(valueStr)
             }
         }
+
         return (notCastedResult as T?)
             ?: defaultValue?.invoke()
             ?: error("Can not get value for property with name $propertyName")
