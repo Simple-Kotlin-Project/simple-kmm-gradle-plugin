@@ -2,6 +2,10 @@ name: check
 
 on:
   push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
 
 jobs:
   build:

@@ -25,7 +25,7 @@ jobs:
         include:
           - os: macos-latest
             gradlew: gradlew
-          - os: self-hosted
+          - os: ubuntu-latest
             gradlew: gradlew
             env: all
     runs-on: ${{ matrix.os }}
