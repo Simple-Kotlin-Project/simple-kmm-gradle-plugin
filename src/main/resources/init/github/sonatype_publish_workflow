@@ -39,17 +39,19 @@ jobs:
         with:
           distribution: '$JAVA_DISTRIBUTION$'
           java-version: '$JAVA_VERSION$'
-      - name: Fetch origin/$GIT_DEFAULT_BRANCH$
-        run: git fetch origin $GIT_DEFAULT_BRANCH$
+      - name: Fetch origin/$SPOTLESS_RATCHET_GIT_BRANCH$
+        run: git fetch origin $SPOTLESS_RATCHET_GIT_BRANCH$
       - name: Publish
-        run: ./${{ matrix.gradlew }} clean publish --no-daemon --no-parallel --stacktrace
-        env:
-          ORG_GRADLE_PROJECT_simple.kmm.publish.repository.url: ${{ secrets.PUBLISH_REPOSITORY_URL }}
-          ORG_GRADLE_PROJECT_simple.kmm.publish.repository.id: ${{ needs.generate_publish_id.outputs.repository_id }}
-          ORG_GRADLE_PROJECT_simple.kmm.publish.username: ${{ secrets.PUBLISH_REPOSITORY_USERNAME }}
-          ORG_GRADLE_PROJECT_simple.kmm.publish.password: ${{ secrets.PUBLISH_REPOSITORY_PASSWORD }}
-          ORG_GRADLE_PROJECT_simple.kmm.sign.key.id: ${{ secrets.SIGNING_KEY_ID }}
-          ORG_GRADLE_PROJECT_simple.kmm.sign.password: ${{ secrets.SIGNING_PASSWORD }}
-          ORG_GRADLE_PROJECT_simple.kmm.sign.private.key: ${{ secrets.SIGNING_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_simple.kmm.kotlin.compile.only.platform: ${{ matrix.env == 'all' && 'false' || 'true' }}
-          ORG_GRADLE_PROJECT_simple.kmm.kotlin.compile.browser.enabled: false
+        run: |
+          ./${{ matrix.gradlew }} \
+          -Psimple.kmm.spotless.ratchet.git.branch=origin/$SPOTLESS_RATCHET_GIT_BRANCH$ \
+          -Psimple.kmm.publish.repository.url="${{ secrets.PUBLISH_REPOSITORY_URL }}" \
+          -Psimple.kmm.publish.repository.id="${{ needs.generate_publish_id.outputs.repository_id }}" \
+          -Psimple.kmm.publish.username="${{ secrets.PUBLISH_REPOSITORY_USERNAME }}" \
+          -Psimple.kmm.publish.password="${{ secrets.PUBLISH_REPOSITORY_PASSWORD }}" \
+          -Psimple.kmm.sign.key.id="${{ secrets.SIGNING_KEY_ID }}" \
+          -Psimple.kmm.sign.password="${{ secrets.SIGNING_PASSWORD }}" \
+          -Psimple.kmm.sign.private.key="${{ secrets.SIGNING_PRIVATE_KEY }}" \
+          -Psimple.kmm.kotlin.compile.only.platform="${{ matrix.env == 'all' && 'false' || 'true' }}" \
+          -Psimple.kmm.kotlin.compile.browser.enabled=false \
+          clean publish --no-daemon --no-parallel --stacktrace
