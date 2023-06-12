@@ -7,6 +7,7 @@ import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.prop
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.PropertyDelegateBuilder
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.pluginProperty
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.property.propertyPrefix
+import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.util.shouldEndedWith
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.UnknownDomainObjectException
@@ -84,7 +85,7 @@ object SimpleKmmPublishConfiguration : Configuration<Project> {
 
             it.repositories {
                 it.maven {
-                    it.url = uri(publishRepositoryUrl.ifEmpty { DEFAULT_REPO_PATH })
+                    it.url = uri(publishRepositoryUrl.ifEmpty { DEFAULT_REPO_PATH }.shouldEndedWith('/'))
                     if (!publishRepositoryId.isNullOrBlank()) {
                         it.url = it.url.resolve(publishRepositoryId!!)
                     }
