@@ -39,8 +39,8 @@ jobs:
         with:
           distribution: '$JAVA_DISTRIBUTION$'
           java-version: '$JAVA_VERSION$'
-      - name: Fetch origin/$SPOTLESS_RATCHET_GIT_BRANCH$
-        run: git fetch origin $SPOTLESS_RATCHET_GIT_BRANCH$
+      - name: Fetch project
+        run: git fetch --all -f -P -p
       - name: Publish
         run: |
           ./${{ matrix.gradlew }} \
