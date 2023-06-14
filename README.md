@@ -143,6 +143,7 @@ Example:
 | `simple.kmm.kotlin.library.configuration.enabled` | Marks a project as Kotlin Multiplatform library. Enable explicit api and etc.              | `false`       |
 | `simple.kmm.kotlin.compile.only.platform`         | Disables common Kotlin Multiplatform targets and compile targets only for current platform | `true`        |
 | `simple.kmm.kotlin.compile.browser.enabled`       | Enables browser compilation for javascript target                                          | `false`       |
+| `simple.kmm.kotlin.compile.by.arm`                | Enables native compiler for ARM processor                                                  | `false`       |
 | `simple.kmm.kotlin.jvm.target`                    | Sets JVM target                                                                            | `11`          |
 
 ### Java Configuration

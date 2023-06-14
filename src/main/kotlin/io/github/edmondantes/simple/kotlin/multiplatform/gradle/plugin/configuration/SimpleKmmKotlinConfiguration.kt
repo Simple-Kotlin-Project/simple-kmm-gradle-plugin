@@ -19,6 +19,7 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
     var isCompileOnlyPlatform: Boolean by kotlinProperty { defaultValue = true }
     var isCompileBrowserEnabled: Boolean by kotlinProperty { defaultValue = false }
     var jvmTarget: String by kotlinProperty { defaultValue = "11" }
+    var isCompileByArm: Boolean by kotlinProperty { defaultValue = false }
 
     override fun configure(configurable: Project) = configurable.run {
         project.pluginManager.apply("org.jetbrains.kotlin.multiplatform")
@@ -57,22 +58,23 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
             val hostOs = System.getProperty("os.name")
             val isMingwX64 = hostOs.startsWith("Windows")
             if (isMingwX64) {
-                it.mingwX64("mingwX64")
+                it.mingwX64("native")
             } else {
                 when (hostOs) {
                     "Mac OS X" -> {
-                        it.macosX64("macosX64")
-                        it.macosArm64("macosArm64")
-                        it.iosX64("iosX64")
-                        it.iosArm64("iosArm64")
-                        it.watchosArm32("watchosArm32")
-                        it.watchosArm64("watchosArm64")
-                        it.watchosX64("watchosX64")
+                        if (isCompileByArm) {
+                            it.macosArm64("native")
+                        } else {
+                            it.macosX64("native")
+                        }
                     }
 
                     "Linux" -> {
-                        it.linuxX64("linuxX64")
-                        it.linuxArm64("linuxArm64")
+                        if (isCompileByArm) {
+                            it.linuxArm64("native")
+                        } else {
+                            it.linuxX64("native")
+                        }
                     }
 
                     else -> throw GradleException("Host OS is not supported for this project")
