@@ -14,13 +14,14 @@ object SimpleKmmGitHubConfiguration : Configuration<Project> {
     }
 
     var javaDistribution: String by githubProperty { defaultValue = "corretto" }
+    var javaVersion: String by githubProperty { defaultValue = "11" }
     var checkWorkflowName: String by githubProperty { defaultValue = "check" }
     var sonatypePublishWorkflowName: String by githubProperty { defaultValue = "sonatypePublish" }
     var mavenPublishWorkflowName: String by githubProperty { defaultValue = "mavenPublish" }
     var isSonatypePublishEnabled: Boolean by githubProperty { defaultValue = false }
 
     override fun configure(configurable: Project) {
-        if (!SimpleKmmGitConfiguration.hasGitRepository || !SimpleKmmJavaConfiguration.isConfigurationEnabled) {
+        if (!SimpleKmmGitConfiguration.hasGitRepository) {
             return
         }
 
@@ -76,7 +77,7 @@ object SimpleKmmGitHubConfiguration : Configuration<Project> {
 
     private val SUBSTRING_FOR_REPLACE: Map<Regex, () -> String> = mapOf(
         "JAVA_DISTRIBUTION" to { javaDistribution },
-        "JAVA_VERSION" to { SimpleKmmJavaConfiguration.javaTargetCompatibilityVersion.majorVersion },
+        "JAVA_VERSION" to { javaVersion },
         "GIT_DEFAULT_BRANCH" to { SimpleKmmGitConfiguration.gitDefaultBranch },
         "SPOTLESS_RATCHET_GIT_BRANCH" to { SimpleKmmSpotlessConfiguration.ratchetGitBranch }
     ).mapKeys { Regex("\\\$${it.key}\\\$") }

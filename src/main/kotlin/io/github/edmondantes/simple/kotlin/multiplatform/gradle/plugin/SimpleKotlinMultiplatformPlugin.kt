@@ -4,7 +4,6 @@ import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configura
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmGitConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmGitHubConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmJGitVerConfiguration
-import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmJavaConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmKotlinConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmKoverConfiguration
 import io.github.edmondantes.simple.kotlin.multiplatform.gradle.plugin.configuration.SimpleKmmPublishConfiguration
@@ -60,7 +59,6 @@ class SimpleKotlinMultiplatformPlugin : Plugin<Project> {
             SimpleKmmGitConfiguration,
 
             SimpleKmmKotlinConfiguration,
-            SimpleKmmJavaConfiguration,
 
             SimpleKmmSpotlessConfiguration,
             SimpleKmmDokkaConfiguration,

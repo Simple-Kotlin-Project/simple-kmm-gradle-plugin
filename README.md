@@ -146,15 +146,6 @@ Example:
 | `simple.kmm.kotlin.compile.by.arm`                | Enables native compiler for ARM processor                                                  | `false`       |
 | `simple.kmm.kotlin.jvm.target`                    | Sets JVM target                                                                            | `11`          |
 
-### Java Configuration
-
-#### Properties
-
-| Property name                           | Description                                         | Default value |
-|-----------------------------------------|-----------------------------------------------------|---------------|
-| `simple.kmm.java.configuration.enabled` | Enables setting up Java configuration by the plugin | `true`        |
-| `simple.kmm.java.target.compatibility`  | Sets Java target compatibility                      | `11`          |
-
 ### Git Configuration
 
 #### Properties
@@ -171,6 +162,7 @@ Example:
 |----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
 | `simple.kmm.github.configuration.enabled`          | Enables setting up GitHub configuration by the plugin                                                                                                                         | `true` if found git repository, else `false` |
 | `simple.kmm.github.java.distribution`              | Sets java distribution for github's workflows. All supported distributions you can find [here](https://github.com/marketplace/actions/setup-java-jdk#supported-distributions) | `corretto`                                   |
+| `simple.kmm.github.java.version`                   | Sets java distributions version for github's workflows.                                                                                                                       | `11`                                         |
 | `simple.kmm.github.check.workflow.name`            | Sets a file's name for github's workflow for build and check project                                                                                                          | `check`                                      |
 | `simple.kmm.github.sonatype.publish.enabled`       | Configure github's workflow for publish artifacts for sonatype publishing, else configure for maven publishing                                                                | `false`                                      |
 | `simple.kmm.github.sonatype.publish.workflow.name` | Sets a file's name for github's workflow for sonatype publishing                                                                                                              | `sonatypePublish`                            |
