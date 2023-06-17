@@ -27,7 +27,9 @@ object SimpleKmmSpotlessConfiguration : Configuration<Project> {
                 it.target("src/*/kotlin/**/*.kt")
                 it.targetExclude(file(SimpleKmmTestEnvironmentConfiguration.variablesClassPath))
                 it.ktlint(ktlintVersion)
-                it.licenseHeaderFile(licenseFileHeaderPath)
+                if (file(licenseFileHeaderPath).exists()) {
+                    it.licenseHeaderFile(licenseFileHeaderPath)
+                }
             }
         }
     }
