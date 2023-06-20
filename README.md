@@ -136,15 +136,17 @@ Example:
 
 #### Properties
 
-| Property name                                     | Description                                                                                | Default value |
-|---------------------------------------------------|--------------------------------------------------------------------------------------------|---------------|
-| `simple.kmm.kotlin.configuration.enabled`         | Enables setting up Kotlin configuration by the plugin                                      | `true`        |
-| `simple.kmm.kotlin.serialization.plugin.enabled`  | Enables applying Kotlin Serialization Plugin                                               | `false`       |
-| `simple.kmm.kotlin.library.configuration.enabled` | Marks a project as Kotlin Multiplatform library. Enable explicit api and etc.              | `false`       |
-| `simple.kmm.kotlin.compile.only.platform`         | Disables common Kotlin Multiplatform targets and compile targets only for current platform | `true`        |
-| `simple.kmm.kotlin.compile.browser.enabled`       | Enables browser compilation for javascript target                                          | `false`       |
-| `simple.kmm.kotlin.compile.by.arm`                | Enables native compiler for ARM processor                                                  | `false`       |
-| `simple.kmm.kotlin.jvm.target`                    | Sets JVM target                                                                            | `11`          |
+| Property name                                         | Description                                                                                           | Default value |
+|-------------------------------------------------------|-------------------------------------------------------------------------------------------------------|---------------|
+| `simple.kmm.kotlin.configuration.enabled`             | Enables setting up Kotlin configuration by the plugin                                                 | `true`        |
+| `simple.kmm.kotlin.serialization.plugin.enabled`      | Enables applying Kotlin Serialization Plugin                                                          | `false`       |
+| `simple.kmm.kotlin.compile.target.jvm.enabled`        | Enables compile for JVM target                                                                        | `true`        |
+| `simple.kmm.kotlin.compile.target.js.enabled`         | Enables compile for NodeJS target                                                                     | `true`        |
+| `simple.kmm.kotlin.compile.target.browser.js.enabled` | Enables compile for Browser JS target                                                                 | `false`       |
+| `simple.kmm.kotlin.compile.target.native.enabled`     | Enables compile for Native target (For current system)                                                | `false`       |
+| `simple.kmm.kotlin.compile.target.native.arm.enabled` | Enables compile for ARM Native target (For current system) (Enabled only if native target is enabled) | `false`       |
+| `simple.kmm.kotlin.explicit.api.enabled`              | Enables explicit api and etc.                                                                         | `false`       |
+| `simple.kmm.kotlin.sdk.java.version`                  | Sets SDK java version for JVM target                                                                  | `11`          |
 
 ### Git Configuration
 

@@ -99,11 +99,12 @@ object SimpleKmmPublishConfiguration : Configuration<Project> {
             }
         }
 
-        project.afterEvaluate {
-            tasks.withType(AbstractPublishToMaven::class.java)
-                .matching { it.publication.name == KOTLIN_MULTIPLATFORM_PUBLICATION_NAME }
-                .configureEach { it.isEnabled = !SimpleKmmKotlinConfiguration.isCompileOnlyPlatform }
-        }
+        // FIXME: Disable for now, because kotlin multiplatform gradle plugin can not publish to one repository from different sources
+//        project.afterEvaluate {
+//            tasks.withType(AbstractPublishToMaven::class.java)
+//                .matching { it.publication.name == KOTLIN_MULTIPLATFORM_PUBLICATION_NAME }
+//                .configureEach { it.isEnabled = !SimpleKmmKotlinConfiguration.isCompileOnlyPlatform }
+//        }
     }
 
     private inline fun <T> publishProperty(block: PropertyDelegateBuilder<T>.() -> Unit): PropertyDelegate<T> =
