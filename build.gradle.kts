@@ -16,12 +16,12 @@ repositories {
 }
 
 dependencies {
-    withVersion("kotlin", "org.jetbrains.kotlin:kotlin-gradle-plugin")
-    withVersion("kotlin", "org.jetbrains.kotlin:kotlin-serialization")
-    withVersion("dokka", "org.jetbrains.dokka:dokka-gradle-plugin")
-    withVersion("spotless", "com.diffplug.spotless:spotless-plugin-gradle")
-    withVersion("kover", "org.jetbrains.kotlinx:kover-gradle-plugin")
-    withVersion("jgitver", "fr.brouillard.oss.gradle:gradle-jgitver-plugin")
+    api(libs.kotlin.gradle)
+    api(libs.kotlin.serialization)
+    api(libs.dokka)
+    api(libs.spotless)
+    api(libs.kover)
+    api(libs.jgitver)
 
     testImplementation(kotlin("test"))
 }
@@ -62,16 +62,6 @@ pluginBundle {
     pluginTags = mapOf(
         "simpleGradleKmmPlugin" to listOf("kotlin", "kotlinMultiplatform", "kmm")
     )
-}
-
-fun DependencyHandlerScope.withVersion(name: String, plugin: String) {
-    api(plugin version name)
-}
-
-infix fun String.version(name: String): String {
-    val version = properties["version.$name"] ?: return this
-
-    return "$this:$version"
 }
 
 extensions.configure<JGitverPluginExtension> {
