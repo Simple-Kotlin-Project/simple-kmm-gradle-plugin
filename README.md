@@ -177,7 +177,7 @@ Example:
 | Property name                                  | Description                                             | Default value                              |
 |------------------------------------------------|---------------------------------------------------------|--------------------------------------------|
 | `simple.kmm.spotless.configuration.enabled`    | Enables setting up Spotless configuration by the plugin | `true`                                     |
-| `simple.kmm.spotless.ktlint.version`           | Sets Ktlint version                                     | `0.48.2`                                   |
+| `simple.kmm.spotless.ktlint.version`           | Sets Ktlint version                                     | `0.50.0`                                   |
 | `simple.kmm.spotless.license.file.header.path` | Sets path to a license file header for Spotless         | `LICENSE_FILE_HEADER`                      |
 | `simple.kmm.spotless.ratchet.git.branch`       | Sets git branch for ratchetFrom for spotless            | value from `simple.kmm.git.default.branch` |
 
