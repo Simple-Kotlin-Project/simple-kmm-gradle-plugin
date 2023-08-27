@@ -20,7 +20,7 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
 
     override var isConfigurationEnabled: Boolean by kotlinProperty { defaultValue = true }
     var isSerializationPluginEnabled: Boolean by kotlinProperty { defaultValue = false }
-    var isExplicitApiEnable: Boolean by kotlinProperty { defaultValue = false }
+    var isExplicitApiEnabled: Boolean by kotlinProperty { defaultValue = false }
     var isCompileTargetJvmEnabled: Boolean by kotlinProperty { defaultValue = true }
     var isCompileTargetJsEnabled: Boolean by kotlinProperty { defaultValue = true }
     var isCompileTargetBrowserJsEnabled: Boolean by kotlinProperty { defaultValue = false }
@@ -34,7 +34,7 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
         }
 
         extensions.configure(KotlinMultiplatformExtension::class.java) {
-            if (isExplicitApiEnable) {
+            if (isExplicitApiEnabled) {
                 it.explicitApi()
             }
 
