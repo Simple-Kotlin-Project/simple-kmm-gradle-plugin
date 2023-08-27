@@ -5,7 +5,7 @@ plugins {
     `java-gradle-plugin`
     kotlin("jvm") version "1.8.22"
     id("fr.brouillard.oss.gradle.jgitver") version "0.9.1"
-    id("com.gradle.plugin-publish") version "1.2.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
 }
 
 group = "io.github.edmondantes"
