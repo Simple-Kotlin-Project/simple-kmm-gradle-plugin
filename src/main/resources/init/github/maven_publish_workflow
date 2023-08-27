@@ -6,37 +6,38 @@ on:
       - 'v*'
 jobs:
   publish:
-    strategy:
-      matrix:
-        include:
-          - os: macos-latest
-            gradlew: gradlew
-          - os: ubuntu-latest
-            gradlew: gradlew
-            env: all
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Print publishing type
-        run: echo "This runner with env type = ${{ matrix.env == 'all' && 'all' || 'native' }}"
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Configure JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: '$JAVA_DISTRIBUTION$'
-          java-version: '$JAVA_VERSION$'
-      - name: Fetch project
-        run: git fetch --all -f -P -p
-      - name: Publish
-        run: |
-          ./${{ matrix.gradlew }} \
-          -Psimple.kmm.spotless.ratchet.git.branch=origin/$SPOTLESS_RATCHET_GIT_BRANCH$ \
-          -Psimple.kmm.publish.repository.url="${{ secrets.PUBLISH_REPOSITORY_URL }}" \
-          -Psimple.kmm.publish.username="${{ secrets.PUBLISH_REPOSITORY_USERNAME }}" \
-          -Psimple.kmm.publish.password="${{ secrets.PUBLISH_REPOSITORY_PASSWORD }}" \
-          -Psimple.kmm.sign.key.id="${{ secrets.SIGNING_KEY_ID }}" \
-          -Psimple.kmm.sign.password="${{ secrets.SIGNING_PASSWORD }}" \
-          -Psimple.kmm.sign.private.key="${{ secrets.SIGNING_PRIVATE_KEY }}" \
-          -Psimple.kmm.kotlin.compile.only.platform="${{ matrix.env == 'all' && 'false' || 'true' }}" \
-          -Psimple.kmm.kotlin.compile.browser.enabled=false \
-          clean publish --no-daemon --no-parallel --stacktrace
+      strategy:
+        matrix:
+          include:
+            - os: windows-latest
+              gradlew: gradlew.bat
+              tasks: publishNativeForWindowsToMavenRepository
+            - os: macos-latest
+              gradlew: gradlew
+              tasks: publishNativeForMacosToMavenRepository
+            - os: ubuntu-latest
+              gradlew: gradlew
+              tasks: publishNativeForLinuxToMavenRepository publishNotNativeToMavenRepository
+      runs-on: ${{ matrix.os }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Configure JDK
+          uses: actions/setup-java@v3
+          with:
+            distribution: '$JAVA_DISTRIBUTION$'
+            java-version: '$JAVA_VERSION$'
+        - name: Fetch project
+          run: git fetch --all -f -P -p
+        - name: Publish
+          run: |
+            ./${{ matrix.gradlew }} \
+            -Psimple.kmm.spotless.ratchet.git.branch=origin/$SPOTLESS_RATCHET_GIT_BRANCH$ \
+            -Psimple.kmm.publish.repository.url="${{ secrets.PUBLISH_REPOSITORY_URL }}" \
+            -Psimple.kmm.publish.username="${{ secrets.PUBLISH_REPOSITORY_USERNAME }}" \
+            -Psimple.kmm.publish.password="${{ secrets.PUBLISH_REPOSITORY_PASSWORD }}" \
+            -Psimple.kmm.sign.key.id="${{ secrets.SIGNING_KEY_ID }}" \
+            -Psimple.kmm.sign.password="${{ secrets.SIGNING_PASSWORD }}" \
+            -Psimple.kmm.sign.private.key="${{ secrets.SIGNING_PRIVATE_KEY }}" \
+            -Psimple.kmm.kotlin.compile.target.browser.js.enabled=false \
+            clean ${{ matrix.tasks }} --no-daemon --no-parallel --stacktrace
