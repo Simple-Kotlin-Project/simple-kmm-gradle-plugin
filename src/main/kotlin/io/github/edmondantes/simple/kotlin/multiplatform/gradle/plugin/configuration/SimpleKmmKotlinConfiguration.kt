@@ -38,7 +38,7 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
                 it.explicitApi()
             }
 
-            tasks.create("publicNotNativeToMavenRepository") {
+            tasks.create("publishNotNativeToMavenRepository") {
                 it.group = TASK_GROUP_PUBLISHING
                 it.description = "Publishes all not native Maven publication to Maven repository 'maven'."
                 val repositoryType = "repository"
@@ -52,7 +52,7 @@ object SimpleKmmKotlinConfiguration : Configuration<Project> {
                 }
             }
 
-            tasks.create("publicNotNativeToMavenLocal") {
+            tasks.create("publishNotNativeToMavenLocal") {
                 it.group = TASK_GROUP_PUBLISHING
                 it.description = "Publishes all not native Maven publication to the local Maven repository."
                 val repositoryType = "local"
