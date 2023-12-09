@@ -10,7 +10,7 @@ import org.gradle.api.Project
 
 object SimpleKmmSpotlessConfiguration : Configuration<Project> {
     override var isConfigurationEnabled: Boolean by spotlessProperty { defaultValue = true }
-    var ktlintVersion: String by spotlessProperty { defaultValue = "0.50.0" }
+    var ktlintVersion: String by spotlessProperty { defaultValue = "1.0.1" }
     var licenseFileHeaderPath: String by spotlessProperty { defaultValue = "./LICENSE_FILE_HEADER" }
     var ratchetGitBranch: String by spotlessProperty { defaultValue = SimpleKmmGitConfiguration.gitDefaultBranch }
 
